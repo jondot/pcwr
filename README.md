@@ -1,7 +1,7 @@
 # Pragmatic Concurrency With Ruby
 
 
-I'm coming from a parallel computation, distributed systems background by education, and have relatively strong foundations in infrastructural concurrent/parallel libraries and products that I've built and maintained over the years both on the JVM and .Net.
+I'm coming from a parallel computation, distributed systems background by education, and have relatively strong foundations in infrastructural concurrent/parallel libraries and products that I've built and maintained over the years, on both the JVM and .NET.
 
 Recently, I've dedicated more and more time building and deploying real concurrent projects with Ruby using [JRuby](http://jruby.org), as opposed to developing with Ruby (MRI) with concurrency the way it is (process-level and GIL thread-level). I'd like to share some of that with you.
 
@@ -9,7 +9,7 @@ Recently, I've dedicated more and more time building and deploying real concurre
 _Administrative note<<EOF_:
 
 > This may come as a lengthy information-packed read.
-You can put the blame on me for this one because I wanted to increase the value for the reader as much as possible and pack something that could have been a lengthy book, into a single highly concentrated no-bullshit article.
+You can put the blame on me for this one, because I wanted to increase the value for the reader as much as possible, and pack something that could have been a lengthy book, into a single highly concentrated no-bullshit article.
 
 > As an experiment, I also put most of the example code in a repository including the source of this article. Please feel free to fork and apply contributions of any kind, I'll gladly accept pull requests.
 
@@ -20,13 +20,13 @@ _EOF_
 
 ## Concurrency is Awesome!
 
-Remember those [old 8-bit games](http://en.wikipedia.org/wiki/Double_Dragon) you used to play as a child?. In a hindsight - you know its awesome, but if you're a gamer or just a casual gamer, and you're forced to face it today, the graphics will feel bad.
+Remember those [old 8-bit games](http://en.wikipedia.org/wiki/Double_Dragon) you used to play as a child?. In a hindsight - you know its awesome, but if you're a gamer or just a casual gamer, and you're forced to play it today, the graphics will feel bad.
 
-This is because its a detail thing; just like childhood computer games, as time passes it seems like your brain doesn't care (or forgets) the proper details.
+This is because it’s a detail thing; just like childhood computer games, as time passes, it seems like your brain doesn't care (or forgets) the proper details.
 
-So given that one is an MRI Ruby developer, her mindset would be that concurrency just works, and its easy and awesome. But you might be right guessing that due to the level of cynicism going around here - it isn't the end of it.
+So given that one is an MRI Ruby developer, her mindset would be that concurrency just works, and it is easy and awesome. But you might be right guessing that due to the level of cynicism going around here - it isn't the end of it.
 
-The MRI Ruby [GIL](http://en.wikipedia.org/wiki/Global_Interpreter_Lock) is gracefully keeping some details away from you: yes things _are_ running in parallel with the help of _properly_ built I/O libraries (for example: historically, mysql gem was initially not doing it properly, which meant your thread would block on I/O), but surely, __code__ isn't running in parallel. It's just like what your brain did when it covered up for those horrific 8-bit graphics that you were sure are still awesome.
+The MRI Ruby [GIL](http://en.wikipedia.org/wiki/Global_Interpreter_Lock) is gracefully keeping some details away from you: yes things _are_ running in parallel with the help of _properly_ built I/O libraries (for example: historically, the MySQL gem was initially not doing it properly, which meant your thread would block on I/O), but surely, __code__ isn't running in parallel. It's just like what your brain did when it covered up for those horrific 8-bit graphics that you were sure are still awesome.
 
 
 <!-- more -->
@@ -46,7 +46,7 @@ limitations.
 
 Several years ago, I worked on an enterprise-grade software in the [DFM](http://en.wikipedia.org/wiki/Design_for_manufacturability_(PCB) / electronics field at Mentor Graphics. There was one product, which was able to optimize the kind of [machines](http://en.wikipedia.org/wiki/SMT_placement_equipment) that fabricate the components of the phones, laptops and electronics that you use day to day and all aspects of their manufacturing operation, so that they were used to the maximum possible capacity. It did so by modeling the manufacturing pipeline in ways that humans never could.
 
-In this field, a machine not working at its 100% capacity is directly translated to money lost. And worse, if a bug in the optimizing software caused a few hours of downtime that's plain catastrophic.
+In this field, a machine not working at its 100% capacity is directly translated to money lost. And worse, if a bug in the optimizing software caused a few hours of downtime, that's plain catastrophic.
 
 By an analogy, CPUs were made to burn cycles. If you have a machine that doesn't work all of its cores, all on 100% CPU and in the first place you _need_ more
 performance out of your application, then concurrency is one of the solutions.
@@ -77,7 +77,7 @@ be 'static happy'. But I think its for an entirely different reason -- which is:
 using and mutating global state.
 
 In Ruby, that one static always-visible container, often sneaks out. In a hindsight you'll note that some times
-it simply serves as a poor man's IoC - and that's cool; other times its misused as a big ball of mud, often mutated all along the running code by many different parts of your applications. In any case, on real concurrent platforms such as JRuby its still plain dangerous.
+it simply serves as a poor man's Inversion-of-Control (“IoC”) - and that's cool; other times, it is misused as a big ball of mud, often mutated all along the running code by many different parts of your applications. In any case, on real concurrent platforms such as JRuby its still plain dangerous.
 
 That's why even on MRI, I cringe every time I have to use a static variable in the framework/library
 I'm basing my code on, and every time I'm using an object that _I know_ will use a static variable,
@@ -137,7 +137,7 @@ Problem is, I have the feeling that everyone _around me_ are in a non-concurrent
 
 ## Thread Safety
 
-The first step into the concurrent world, is to use a real concurrent platform, for us Rubyists it is indisputably JRuby. Not to mention, the JVM is still _very_ strong, and really great for server-side work.
+The first step into the concurrent world, is to use a real concurrent platform, for us Rubyists, it is indisputably JRuby. Not to mention, the JVM is still _very_ strong, and really great for server-side work.
 
 The next step is to care and worry about _thread safety_. If you're using a 3rd party ruby gem, or a Java library, you should be aware that there's a chance it is not thread safe, and once more than one of your threads hit it at the same time it'll blow up, and just to further emphasize on the previous discussion - wouldn't have blown up if your code was running on MRI.
 
