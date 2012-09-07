@@ -325,10 +325,10 @@ And the great thing is that this kind of code works in real, production systems.
 Now, let’s move towards the lower-hanging fruit.
 
 
-I mentioned that I often like to review existing Java (or JVM, be it scala, clojure, what have you) libraries, because I feel that their concurrency
+I mentioned that I often like to review existing Java (or JVM, be it Scala, Clojure, or whatever you have) libraries, because I feel that their concurrency
 story is more mature and it may be more suitable for the task.
 
-Lets start off with the very recent Celluloid example, where `mutex` is used. It seems that `mutex` and friends are used to create a thread safe queue,
+Let’s start off with the very recent Celluloid example, where `mutex` is used. It seems that `mutex` and friends are used to create a thread safe queue,
 which is one of the basic things you would find several variants of in Java.
 
 **Concurrent Queues**
@@ -353,13 +353,13 @@ end
 puts q
 ```
 
-But hold your horses now, Ruby offers a thread-safe queue out of the box in the `thread` library; feel free to use that if you feel a bit awkward interoping with Java in this way. Use ConcurrentLinkedQueue if you have the performance requirements for it.
+But hold your horses now, Ruby offers a thread-safe queue out of the box in the `thread` library; feel free to use that if you feel a bit awkward interoperating with Java in this way. Use ConcurrentLinkedQueue if you have the performance requirements for it.
 
 
 
 **Atomic**
 
-On every platforms, there are semantic for atomicity. Our x86 CPUs contain constructs called _[registers](http://en.wikipedia.org/wiki/Processor_register)_, and these are a certain bits wide. Often you'll see a 64bits CPU, which means its registers are also 64bits wide among other things.
+On every platforms, there are semantics for atomicity. Our x86 CPUs contain constructs called _[registers](http://en.wikipedia.org/wiki/Processor_register)_, and these are a certain bits wide. Often you'll see a 64bits CPU, which means its registers are also 64bits wide among other things.
 
 This creates a situation, where it may be that assigning a 64bit wide number on a 32bit CPU (with matching 32bit wide registers) may _not_ be atomic, so in simple things like this:
 
@@ -372,7 +372,7 @@ Assigning `j=i` may be a 2 part operation, with space between its parts for othe
 
 To solve this some platforms or languages _guarantee_ that assigning reference types is atomic, no matter the underlying CPU architecture. They also have guarantees regarding value types.
 
-However, we can not care about this and guarantee atomicity in Ruby with [Atomic](https://github.com/headius/ruby-atomic) by JRuby lead Charles Nutter (@headius) himself:
+However, we should not care about this, and we should make sure we guarantee atomicity in Ruby with [Atomic](https://github.com/headius/ruby-atomic) by JRuby lead Charles Nutter (@headius) himself:
 
 ```ruby
 my_atomic = Atomic.new(42)
@@ -392,7 +392,7 @@ The cool thing about this and other JRuby libraries in general, is that if you t
 
 # Concurrency Primitives in a Hurry
 
-So we just reviewed a Mutex, a concurrent queue, Atomic, and more. If you're like me, by now you can't stop yourself by asking, are there other constructs I can use?
+So we just reviewed a Mutex, a concurrent queue, Atomic, and more. If you are like me, by now you can't stop yourself from asking: “Are there other constructs I can use?”.
 
 Well the answer is a definite yes. Here's a quick review.
 
