@@ -188,7 +188,7 @@ $ curl http://localhost:9292/stats/foo
 ```
 
 
-Not bad for a low-resource VM. Lets switch to JRuby and `trinidad`, which is a an embedded tomcat servlet container. If you're running this on your box, note that I've warmed up the JVM first so that JITting will get us nicer performance numbers (you can too by running around a couple 10K requests first):
+Not bad for a low-resource VM. Lets switch to JRuby and `trinidad`, which is a an embedded tomcat servlet container. If you're running this on your box, note that I've warmed up the JVM first so that JITing will get us nicer performance numbers (you can too by running around a couple 10K requests first):
 
 ```
 # after running 80K requests in chunks of 20K, the last batch
@@ -277,14 +277,14 @@ logger = RJack::SLF4J[ "main.logger" ]
 
 Where `logback.xml` is a quite harmless XML, representing the [logging configuration](http://logback.qos.ch/manual/configuration.html), just what you might know from Log4r or Log4j.
 
-Finishing up with a solution that I liked better. Yes its a hybrid, but I feel it can be trusted in a [highly concurrent](http://logback.qos.ch/reasonsToSwitch.html) environment.
+Finishing up with a solution that I liked better. Yes it’s a hybrid solution, but I feel it can be trusted in a [highly concurrent](http://logback.qos.ch/reasonsToSwitch.html) environment.
 
 
 
 ### Your Own
 Next up would be _your own_ code.
 
-For orchestrating concurrency, Ruby is primarily giving you `Mutex`. In high-performance concurrency terms, that's not such a great find, and will cause contention problems for your threads (out of the scope of this discussion).
+For orchestrating concurrency, Ruby is primarily giving you a `Mutex`. In high-performance concurrency terms, that's not such a great find, and will cause contention problems for your threads (out of the scope of this discussion).
 
 For these specific situations, _should you ever come into them_, you should go non-blocking with the native Java  [concurrent primitives and collections](http://docs.oracle.com/javase/1.5.0/docs/api/java/util/concurrent/package-summary.html), again Java/JRuby interop for the rescue.
 
@@ -292,7 +292,7 @@ For these specific situations, _should you ever come into them_, you should go n
 
 A great, and more importantly real-world example of `Mutex` and Ruby in the wild is [in Celluloid](https://github.com/celluloid/celluloid/blob/master/lib/celluloid/mailbox.rb#L17).
 
-Celluloid models concurrency in a unique way. Like Erlang and Akka on the JVM, there are several constructs or patterns that
+Celluloid models concurrency in a unique way. Like Erlang, and Akka on the JVM, there are several constructs or patterns that
 enable building fault-tolerant and concurrent applications. These are definitely eye-openers, but for the sake of focus, let's simplify.
 
 You can look at Celluloid as a framework that enables you to build a network of "agents", that communicate through _message passing_. For
@@ -316,13 +316,13 @@ def <<(message)
 .. more code with mutex scattered around ..
 ```
 
-Here we see a usage of `mutex`. So the answer is, everywhere you want to create a _[critical section](http://en.wikipedia.org/wiki/Critical_section)_ which is where only one thread would be allowed to run, is where you would wrap a `mutex` over.
+Here we see some usage of `mutex`. So the answer is, everywhere you want to create a _[critical section](http://en.wikipedia.org/wiki/Critical_section)_ which is where only one thread would be allowed to run, is where you would wrap a `mutex` over.
 
 And the great thing is that this kind of code works in real, production systems. And if you're on the lets-reduce-memory-for-background-jobs bandwagon, you're probably already using it implicitly, with [Sidekiq](https://github.com/mperham/sidekiq).
 
 
 
-Lets move towards the low-hanging fruit.
+Now, let’s move towards the lower-hanging fruit.
 
 
 I mentioned that I often like to review existing Java (or JVM, be it scala, clojure, what have you) libraries, because I feel that their concurrency
