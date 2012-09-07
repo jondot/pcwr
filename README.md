@@ -584,7 +584,7 @@ kill me with CTRL-C
 
 But here's something to think about. Do you really want _real_ concurrency?
 
-The truth is, you can _still_ do quite a lot of work in the work loads we're handling in startups, enterprises, and web in general, without resorting to utilizing concurrency. This is primarily due to the
+The truth is, you can _still_ do quite a lot of work in the work loads we're handling in startups, enterprises, and web in general, without resorting to utilizing _real_ concurrency. This is primarily due to the
 fact that most of your work is I/O-bound.
 
 You make a database query, munge the data, generate output and stream it to clients. Much of this is I/O, and given that I/O is several orders of
