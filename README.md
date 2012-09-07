@@ -124,7 +124,11 @@ $ ruby test.rb
 97
 ```
 
-And the result varies from run to run due to the timing of your threads. MRI Ruby on the other hand correctly and reliably produces `100`, you guessed it - because of the GIL.
+And the result varies from run to run due to the timing of your threads.
+MRI Ruby on the other hand correctly and reliably produces `100`. The
+way this happens is due to MRI inlining, treating `+=` not as a separate access
+and assignment - but it serves well to visualize the point (thanks
+[@thedarkone](https://github.com/thedarkone) for giving an indepth explanation of this).
 
 
 Problem is, I have the feeling that everyone _around me_ are in a non-concurrent world, and are accustomed to keeping and using (sharing) global static variables while never flipping that "what if another thread gets here" switch that kills everyone's party.
@@ -213,7 +217,7 @@ So we saw an example of a service that could be real and useful (to a degree), u
 
 In which you always ask: _is this thing I'm using thread-safe?_
 
-* Ensuring that ruby itself is thread safe (things like constructing objects via `new`, for example). This is guaranteed for you within JRuby, by the JRuby team.
+* Ensuring that ruby itself is thread safe (under the hood). This is guaranteed for you within JRuby, by the JRuby team.
 
 * Ensuring that 3rd party libraries are thread safe. This you'll have to find out by yourself, although most major web frameworks and gems are thread safe already by now. I personally like to double-check by going over the code.
 
