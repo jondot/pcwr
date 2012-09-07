@@ -1,0 +1,13 @@
+source :gemcutter
+
+gem 'sinatra'
+gem 'json'
+
+platforms :jruby do
+  gem 'trinidad'
+end
+
+platforms :mri do
+  gem 'thin'
+end
+
