@@ -500,7 +500,7 @@ Human, kree!
 
 ## Countdown Latch
 
-This is very similar to a real life latch in its behavior, just that you can set a number which is counted down on. Every thread can signal that it is done its intended work by counting down on the latch once. When it hits the latch it will be forced to wait on it. Once all required threads hit the latch, and it is fully counted down, everyone (all threads) is set free at once.
+This is very similar to a real life latch in its behavior, just that you can set a number which is counted down on. Every thread can signal that it has done its intended work, by counting down on the latch once. When it hits the latch, it will be forced to wait on it. Once all required threads hit the latch, and it is fully counted down, everyone (all threads) is set free at once.
 
 A unique property of the latch is that it is one-time one-use. Once the latch is open, you can't reset it.
 
@@ -584,17 +584,17 @@ kill me with CTRL-C
 
 But here's something to think about. Do you really want _real_ concurrency?
 
-The truth is, you can _still_ do quite a lot of work in the work loads we're handling in startups, enterprises, and web in general. This is primarily due to the
+The truth is, you can _still_ do quite a lot of work in the work loads we're handling in startups, enterprises, and web in general, without resorting to utilizing concurrency. This is primarily due to the
 fact that most of your work is I/O-bound.
 
 You make a database query, munge the data, generate output and stream it to clients. Much of this is I/O, and given that I/O is several orders of
 magnitude slower than memory operations (code), MRI Ruby has quite a bit of time to allocate to other threads.
 
-Or you make a one or more Web API requests, get the data, save to database, and stream it to clients. Again _tons_ of I/O.
+Or you make one or more Web API requests, get the data, save it to the database, and stream it to the clients. Again _tons_ of I/O.
 
 This is why MRI Ruby will still serve you well into which ever task you have in hand in this domain. But, you will _absolutely_ need real concurrency
-if you hit a performance plateau and by then, you'll probably be an expert in this field.
+if you hit a performance plateau, and, by then, you'll probably be an expert in this field.
 
 
-But hey! you'll never get to experience the JVM with JRuby as your language of choice, and its _really_ great [so try it out](http://jruby.org/).
+But hey! You'll never get to experience the JVM with JRuby as your language of choice, and it’s _really_ great [so try it out](http://jruby.org/).
 
