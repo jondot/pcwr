@@ -143,7 +143,7 @@ The next step is to care and worry about _thread safety_. If you're using a 3rd 
 
 Sure, you can blow things up with Ruby threads; doing shared I/O for example but this is besides the point for now: I'm talking about code running in parallel, mutating shared state.
 
-Lets take a look at this simplistic stats metrics server written in Sinatra.
+Lets take a look at this simplistic statistics metrics server written in Sinatra.
 
 ```ruby
 require 'sinatra'
@@ -169,7 +169,7 @@ class StatsApp < Sinatra::Base
 end
 ```
 
-Note that we idiomatically initialize null references when we encounter a new `metric` and a new `product`. Lets run it with MRI and `thin`:
+Note that we idiomatically initialize null references when we encounter a new `metric` and a new `product`. Let’s run it with MRI and `thin`:
 
 ```
 $ ab -n 20000 -c 100 -p /dev/null http://localhost:9292/stats/foo/mongodb.read
